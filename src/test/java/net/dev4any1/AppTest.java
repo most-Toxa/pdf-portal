@@ -43,7 +43,6 @@ public class AppTest {
 
 	public static User createUser(Long id, Role role) {
 		User user = new User();
-		user.setId(id);
 		user.setRole(role.name());
 		user.setLogin("mr." + id);
 		user.setPassword("password");
@@ -53,7 +52,6 @@ public class AppTest {
 	public Category createCategory(Long id, String name) {
 		Category category = new Category();
 		category.setName(name);
-		category.setId(id);
 		return category;
 	}
 

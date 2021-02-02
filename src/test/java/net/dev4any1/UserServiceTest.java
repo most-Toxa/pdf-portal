@@ -4,11 +4,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import net.dev4any1.model.UserModel;
-import net.dev4any1.service.UserService;
+import net.dev4any1.service.UserServiceImpl;
 
 public class UserServiceTest  {
 
-	private UserService service = new UserService();
+	private UserServiceImpl service = new UserServiceImpl();
 	
 	@Test
 	public void testCreateSubscriber() {

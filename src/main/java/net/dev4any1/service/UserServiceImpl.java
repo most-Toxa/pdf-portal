@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.servlet.SessionScoped;
+
 import net.dev4any1.dao.CategoryDao;
 import net.dev4any1.dao.SubscriptionDao;
 import net.dev4any1.dao.UserDao;
@@ -12,11 +15,14 @@ import net.dev4any1.model.SubscriptionModel;
 import net.dev4any1.model.UserModel;
 import net.dev4any1.pojo.Role;
 
+@SessionScoped
 public class UserServiceImpl implements UserService {
-
-	private UserDao userDao = new UserDao();
-	private CategoryDao catDao = new CategoryDao();
-	private SubscriptionDao subscripDao = new SubscriptionDao();
+	@Inject
+	private UserDao userDao;
+	@Inject
+	private CategoryDao catDao;
+	@Inject
+	private SubscriptionDao subscripDao;
 
 	public UserModel createSubscriber(String login, String password) {
 		UserModel user = new UserModel();

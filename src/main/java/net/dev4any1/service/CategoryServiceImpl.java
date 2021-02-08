@@ -2,11 +2,16 @@ package net.dev4any1.service;
 
 import java.util.Collection;
 
+import com.google.inject.Inject;
+import com.google.inject.servlet.SessionScoped;
+
 import net.dev4any1.dao.CategoryDao;
 import net.dev4any1.model.CategoryModel;
 
+@SessionScoped
 public class CategoryServiceImpl implements CategoryService {
-	private CategoryDao dao = new CategoryDao();
+	@Inject
+	private CategoryDao dao; 
 
 	public CategoryModel createCategory(String name) {
 		CategoryModel cat = new CategoryModel();

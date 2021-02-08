@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.inject.Inject;
+import com.google.inject.servlet.SessionScoped;
+
 import net.dev4any1.dao.JournalDao;
 import net.dev4any1.dao.PublisherDao;
 import net.dev4any1.dao.UserDao;
@@ -14,11 +17,16 @@ import net.dev4any1.model.PublisherModel;
 import net.dev4any1.model.SubscriptionModel;
 import net.dev4any1.model.UserModel;
 
+@SessionScoped
 public class JournalServiceImpl implements JournalService {
-	private UserDao userDao = new UserDao();
-	private JournalDao journalDao = new JournalDao();
-	private PublisherDao publisherDao = new PublisherDao();
-	private UserService userService = new UserServiceImpl();
+	@Inject
+	private UserDao userDao; 
+	@Inject
+	private JournalDao journalDao;
+	@Inject
+	private PublisherDao publisherDao;
+	@Inject
+	private UserServiceImpl userService;
 
 	@Override
 	public List<JournalModel> listAll(UserModel user) {
@@ -50,7 +58,7 @@ public class JournalServiceImpl implements JournalService {
 
 	@Override
 	public JournalModel publish(PublisherModel publisher, JournalModel journal, Long categoryId) {
-		
+
 		return null;
 	}
 

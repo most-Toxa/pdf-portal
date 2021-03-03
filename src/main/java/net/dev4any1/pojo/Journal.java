@@ -2,12 +2,12 @@ package net.dev4any1.pojo;
 import java.util.Date;
 
 public class Journal {
-	private Long id;
-	private String name;
-	private String field;
-	private Date publishedAt;
-	private Category category;
-	private Publisher publisher;
+	protected Long id;
+	protected String name;
+	protected String field;
+	protected Date publishedAt;
+	protected Category category;
+	protected Publisher publisher;
 	
 	@Override
 	public String toString() {

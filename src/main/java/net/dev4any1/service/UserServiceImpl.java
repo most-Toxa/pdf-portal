@@ -19,6 +19,18 @@ import net.dev4any1.pojo.Role;
 public class UserServiceImpl implements UserService {
 	@Inject
 	private UserDao userDao;
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
+	public void setCatDao(CategoryDao catDao) {
+		this.catDao = catDao;
+	}
+
+	public void setSubscripDao(SubscriptionDao subscripDao) {
+		this.subscripDao = subscripDao;
+	}
+
 	@Inject
 	private CategoryDao catDao;
 	@Inject

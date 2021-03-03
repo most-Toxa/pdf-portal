@@ -23,4 +23,10 @@ public class CategoryServiceImpl implements CategoryService {
 		return dao.getAll();
 	}
 
+	public void setDao(CategoryDao dao) {
+		this.dao = dao;
+	}
+	
+	
+
 }

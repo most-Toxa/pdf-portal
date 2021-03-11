@@ -19,17 +19,6 @@ import net.dev4any1.pojo.Role;
 public class UserServiceImpl implements UserService {
 	@Inject
 	private UserDao userDao;
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-
-	public void setCatDao(CategoryDao catDao) {
-		this.catDao = catDao;
-	}
-
-	public void setSubscripDao(SubscriptionDao subscripDao) {
-		this.subscripDao = subscripDao;
-	}
 
 	@Inject
 	private CategoryDao catDao;
@@ -71,7 +60,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<SubscriptionModel> getSubscription(UserModel user) {
 		List<SubscriptionModel> subList = new ArrayList<SubscriptionModel>();
-		for (SubscriptionModel sub: subscripDao.getAll()) {
+		for (SubscriptionModel sub : subscripDao.getAll()) {
 			if (sub.getUser().equals(user)) {
 				subList.add(sub);
 			}

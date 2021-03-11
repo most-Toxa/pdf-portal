@@ -7,9 +7,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Scopes;
+import com.google.inject.servlet.SessionScoped;
+
 import net.dev4any1.dao.CategoryDao;
 import net.dev4any1.dao.JournalDao;
 import net.dev4any1.dao.PublisherDao;
+import net.dev4any1.dao.SubscriptionDao;
 import net.dev4any1.dao.UserDao;
 import net.dev4any1.model.CategoryModel;
 import net.dev4any1.model.JournalModel;
@@ -26,23 +33,30 @@ public class JournalServiceTest {
 	private CategoryServiceImpl catService = new CategoryServiceImpl();
 	private PublisherServiceImpl pubService = new PublisherServiceImpl();
 	private UserServiceImpl usService = new UserServiceImpl();
-    private long categoryId;
-    
+	private long categoryId;
+
+	protected Injector injector = Guice.createInjector(new AbstractModule() {
+		@Override
+		protected void configure() {
+			bindScope(SessionScoped.class, Scopes.SINGLETON);
+			bind(CategoryDao.class);
+			bind(SubscriptionDao.class);
+			bind(UserDao.class);
+			bind(UserServiceImpl.class);
+		}
+	});
+
+	@Before
+	public void setup() {
+		injector.injectMembers(service);
+		injector.injectMembers(catService);
+		injector.injectMembers(pubService);
+		injector.injectMembers(usService);
+	}
+
 	@Before
 	public void init() {
-		CategoryDao catDao = new CategoryDao();
-		UserDao userDao = new UserDao();
-		PublisherDao pubDao = new PublisherDao();
-		JournalDao journalDao = new JournalDao();	
-		service.setCatDao(catDao);
-		service.setJournalDao(journalDao);
-		service.setUserDao(userDao);
-		service.setPublisherDao(pubDao);
-		usService.setCatDao(catDao);
-		usService.setUserDao(userDao);
-		service.setUserService(usService);
-		catService.setDao(catDao);
-		pubService.setPubDao(pubDao);
+
 		CategoryModel cat = catService.createCategory("test");
 		categoryId = cat.getId();
 		UserModel user = usService.createSubscriber("login", "password");

@@ -8,11 +8,9 @@ import net.dev4any1.pojo.Role;
 import net.dev4any1.pojo.User;
 
 public class PublisherServiceImpl implements PublisherService {
-    @Inject
-    private PublisherDao pubDao;
-	public void setPubDao(PublisherDao pubDao) {
-		this.pubDao = pubDao;
-	}
+	@Inject
+	private PublisherDao pubDao;
+
 	@Override
 	public PublisherModel createPublisher(String name, User user) {
 		PublisherModel publisher = new PublisherModel();

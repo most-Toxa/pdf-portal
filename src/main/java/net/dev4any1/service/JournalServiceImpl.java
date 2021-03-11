@@ -11,8 +11,6 @@ import com.google.inject.servlet.SessionScoped;
 
 import net.dev4any1.dao.CategoryDao;
 import net.dev4any1.dao.JournalDao;
-import net.dev4any1.dao.PublisherDao;
-import net.dev4any1.dao.UserDao;
 import net.dev4any1.model.CategoryModel;
 import net.dev4any1.model.JournalModel;
 import net.dev4any1.model.PublisherModel;
@@ -24,31 +22,7 @@ import net.dev4any1.pojo.Journal;
 @SessionScoped
 public class JournalServiceImpl implements JournalService {
 	@Inject
-	private UserDao userDao;
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-
-	public void setJournalDao(JournalDao journalDao) {
-		this.journalDao = journalDao;
-	}
-
-	public void setPublisherDao(PublisherDao publisherDao) {
-		this.publisherDao = publisherDao;
-	}
-
-	public void setUserService(UserServiceImpl userService) {
-		this.userService = userService;
-	}
-
-	public void setCatDao(CategoryDao catDao) {
-		this.catDao = catDao;
-	}
-
-	@Inject
 	private JournalDao journalDao;
-	@Inject
-	private PublisherDao publisherDao;
 	@Inject
 	private UserServiceImpl userService;
 	@Inject
@@ -90,8 +64,7 @@ public class JournalServiceImpl implements JournalService {
 		}
 		journal.setPublisher(publisher);
 		journal.setCategory(cat);
-		journalDao.update(journal); //need to change!!
-		return journal;
+		return journalDao.upsert(journal); 
 	}
 
 	@Override

@@ -36,4 +36,13 @@ public class BaseDao<T extends DbObject> {
 		}
 		return object;
 	}
+
+	public T upsert(T object) {
+		if (repository.containsKey(object.getId())) {
+			repository.replace(object.getId(), object);
+		} else {
+			return createAndGet(object);
+		}
+		return object;
+	}
 }

@@ -11,7 +11,7 @@ import net.dev4any1.model.CategoryModel;
 @SessionScoped
 public class CategoryServiceImpl implements CategoryService {
 	@Inject
-	private CategoryDao dao; 
+	private CategoryDao dao;
 
 	public CategoryModel createCategory(String name) {
 		CategoryModel cat = new CategoryModel();
@@ -22,11 +22,5 @@ public class CategoryServiceImpl implements CategoryService {
 	public Collection<CategoryModel> getAll() {
 		return dao.getAll();
 	}
-
-	public void setDao(CategoryDao dao) {
-		this.dao = dao;
-	}
-	
-	
 
 }

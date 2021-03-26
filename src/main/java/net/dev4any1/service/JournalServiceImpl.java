@@ -60,7 +60,7 @@ public class JournalServiceImpl implements JournalService {
 	public JournalModel publish(PublisherModel publisher, JournalModel journal, Long categoryId) {
 		Category cat = catDao.get(categoryId);
 		if (cat == null) {
-			throw new RuntimeException("unable to publish journal, category " + categoryId + " not found");
+			throw new Error("unable to publish journal, category " + categoryId + " not found");
 		}
 		journal.setPublisher(publisher);
 		journal.setCategory(cat);
@@ -71,21 +71,21 @@ public class JournalServiceImpl implements JournalService {
 	public void unPublish(PublisherModel publisher, Long journalId) {
 		Journal journal = journalDao.get(journalId);
 		if (journalDao.get(journalId) == null) {
-			throw new RuntimeException("unable to unpublish journal, journal " + journalId + " not found");
+			throw new Error("unable to unpublish journal, journal " + journalId + " not found");
 		}
 		if (!journal.getPublisher().getId().equals(publisher.getId())) {
-			throw new RuntimeException("unable to unpublish journal, publisher  " + publisher.getName() + " is lier");
+			throw new Error("unable to unpublish journal, publisher  " + publisher.getName() + " is lier");
 		}
 		journalDao.delete(journalId);
 	}
 
 	@Override
 	public List<JournalModel> getNewByCategory(Long categoryId) {
-		// go to journalDao and create method getLastPosts (getAll 24h posts)
+		// TODO go to journalDao and create method getLastPosts (getAll 24h posts)
 		
 		// check categoryId exist
 		if (catDao.get(categoryId) == null) {
-			throw new RuntimeException("unable to add journal in category, category " + categoryId + " not exist");
+			throw new Error("unable to add journal in category, category " + categoryId + " not exist");
 		}
 		
 		List<JournalModel> journalList = new ArrayList<JournalModel>();

@@ -3,6 +3,7 @@ package net.dev4any1.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
@@ -33,21 +34,21 @@ public class UserServiceImpl implements UserService {
 		return userDao.createAndGet(user);
 	}
 
-	public UserModel getByLogin(String login) {
+	public Optional<UserModel> getByLogin(String login) {
 		for (UserModel object : userDao.getAll()) {
 			if (object.getLogin().equals(login)) {
-				return object;
+				return Optional.ofNullable(object);
 			}
 		}
 
-		throw new RuntimeException("user with login " + login + " was not found");
+		throw new Error("user with login " + login + " was not found");
 	}
 
 	@Override
 	public SubscriptionModel subscribe(UserModel user, Long categoryId) {
 		CategoryModel cat = catDao.get(categoryId);
 		if (cat == null) {
-			throw new RuntimeException("category with id " + categoryId + " was not found");
+			throw new Error("category with id " + categoryId + " was not found");
 		} else {
 			SubscriptionModel sub = new SubscriptionModel();
 			sub.setCategory(cat);

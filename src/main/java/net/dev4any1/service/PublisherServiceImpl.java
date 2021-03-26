@@ -17,7 +17,7 @@ public class PublisherServiceImpl implements PublisherService {
 		user.setRole(Role.PUBLISHER.name());
 		publisher.setName(name);
 		publisher.setUser(user);
-		return pubDao.createAndGet(publisher);
+		return pubDao.upsert(publisher); 
 	}
 
 }

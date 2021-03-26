@@ -1,7 +1,10 @@
 package net.dev4any1;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,7 +24,11 @@ import net.dev4any1.dao.UserDao;
 import net.dev4any1.model.CategoryModel;
 import net.dev4any1.model.JournalModel;
 import net.dev4any1.model.PublisherModel;
+import net.dev4any1.model.SubscriptionModel;
 import net.dev4any1.model.UserModel;
+import net.dev4any1.pojo.Category;
+import net.dev4any1.pojo.Journal;
+import net.dev4any1.pojo.User;
 import net.dev4any1.service.CategoryServiceImpl;
 import net.dev4any1.service.JournalServiceImpl;
 import net.dev4any1.service.PublisherServiceImpl;
@@ -33,7 +40,11 @@ public class JournalServiceTest {
 	private CategoryServiceImpl catService = new CategoryServiceImpl();
 	private PublisherServiceImpl pubService = new PublisherServiceImpl();
 	private UserServiceImpl usService = new UserServiceImpl();
-	private long categoryId;
+	private JournalDao journalDao = new JournalDao();
+	private CategoryDao catDao = new CategoryDao();
+	private PublisherModel publisher;
+	private CategoryModel cat;
+	private UserModel userPublisher;
 
 	protected Injector injector = Guice.createInjector(new AbstractModule() {
 		@Override
@@ -43,6 +54,7 @@ public class JournalServiceTest {
 			bind(SubscriptionDao.class);
 			bind(UserDao.class);
 			bind(UserServiceImpl.class);
+			bind(JournalDao.class);
 		}
 	});
 
@@ -52,38 +64,94 @@ public class JournalServiceTest {
 		injector.injectMembers(catService);
 		injector.injectMembers(pubService);
 		injector.injectMembers(usService);
+		injector.injectMembers(journalDao);
 	}
 
 	@Before
 	public void init() {
 
-		CategoryModel cat = catService.createCategory("test");
-		categoryId = cat.getId();
-		UserModel user = usService.createSubscriber("login", "password");
-		PublisherModel publisher = pubService.createPublisher("toxa", user);
-		JournalModel journal1 = createJournal(cat, 1l, publisher,
-				new Date(System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000)));
-		JournalModel journal2 = createJournal(cat, 2l, publisher,
-				new Date(System.currentTimeMillis() - (8 * 24 * 60 * 60 * 1000)));
-		JournalModel journal3 = createJournal(cat, 3l, publisher,
-				new Date(System.currentTimeMillis() - (12 * 60 * 60 * 1000)));
+		cat = catService.createCategory("test");
+		userPublisher = usService.createSubscriber("login", "password");
+		publisher = pubService.createPublisher("toxa", userPublisher);
+		JournalModel journal1 = createJournal(1l, new Date(System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000)));
+		JournalModel journal2 = createJournal(2l, new Date(System.currentTimeMillis() - (8 * 24 * 60 * 60 * 1000)));
+		JournalModel journal3 = createJournal(3l, new Date(System.currentTimeMillis() - (12 * 60 * 60 * 1000)));
 		service.publish(publisher, journal1, cat.getId());
 		service.publish(publisher, journal2, cat.getId());
 		service.publish(publisher, journal3, cat.getId());
 	}
 
-	private JournalModel createJournal(CategoryModel cat, long id, PublisherModel publisher, Date date) {
+	private JournalModel createJournal(long id, Date date) {
 		JournalModel journal = new JournalModel();
-		journal.withField("testfile").withCategory(cat).withId(id).withName("name").withPublisher(publisher)
-				.withPublishedAt(date);
+		journal.withField("testfile").withId(id).withName("name").withPublishedAt(date);
 		return journal;
 	}
 
 	@Test
 	public void testGetNewByCategory() {
-		List<JournalModel> journalList = service.getNewByCategory(categoryId);
+		List<JournalModel> journalList = service.getNewByCategory(cat.getId());
 		Assert.assertTrue(journalList.size() == 1);
-		Assert.assertTrue(journalList.get(0).getId() == 3l);
+		Assert.assertTrue(journalList.get(0).getId() != null);
+	}
+
+	@Test(expected = Error.class)
+	public void testGetNewByCategoryException() {
+		service.getNewByCategory(null);
+	}
+
+	@Test
+	public void testListAll() {
+		UserModel userSubscriber = usService.createSubscriber("login", "password");
+		usService.subscribe(userSubscriber, cat.getId());
+		List<JournalModel> journalList = service.listAll(userSubscriber);
+		Assert.assertTrue(journalList.size() == 3);
+
+	}
+
+	@Test
+	public void testPublisherList() {
+		List<JournalModel> journalList = service.publisherList(publisher);
+		Assert.assertTrue(journalList.size() == 3);
+		for (JournalModel journal : journalList) {
+			Assert.assertEquals(publisher, journal.getPublisher());
+		}
+
+	}
+
+	@Test
+	public void testPublish() {
+		JournalModel journal = createJournal(4l, new Date(System.currentTimeMillis()));
+		CategoryModel cat1 = catService.createCategory("test1");
+		UserModel user1 = usService.createSubscriber("login1", "password1");
+		PublisherModel publisher1 = pubService.createPublisher("toxa1", user1);
+		JournalModel journal1 = service.publish(publisher1, journal, cat1.getId());
+		Assert.assertEquals(publisher1, journal1.getPublisher());
+		Assert.assertEquals(cat1, journal1.getCategory());
+	}
+
+	@Test(expected = Error.class)
+	public void testPublishException() {
+		JournalModel journal = createJournal(4l, new Date(System.currentTimeMillis()));
+		JournalModel journal1 = service.publish(publisher, journal, 24l);
+	}
+
+	@Test
+	public void testUnPublish() {
+		service.unPublish(publisher, 1l);
+		List<JournalModel> journalList = service.publisherList(publisher);
+		Assert.assertTrue(journalList.size() == 2);
+	}
+
+	@Test(expected = Error.class)
+	public void testUnPublishException1() {
+		service.unPublish(publisher, 26l);
+	}
+
+	@Test(expected = Error.class)
+	public void testUnPublishException2() {
+		UserModel user1 = usService.createSubscriber("login1", "password1");
+		PublisherModel publisher1 = pubService.createPublisher("toxa1", user1);
+		service.unPublish(publisher1, 2l);
 	}
 
 }

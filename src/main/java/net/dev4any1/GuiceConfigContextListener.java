@@ -1,5 +1,7 @@
 package net.dev4any1;
 
+import javax.ws.rs.core.Response;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
@@ -10,6 +12,7 @@ import net.dev4any1.dao.JournalDao;
 import net.dev4any1.dao.PublisherDao;
 import net.dev4any1.dao.SubscriptionDao;
 import net.dev4any1.dao.UserDao;
+import net.dev4any1.resource.PublisherResource;
 import net.dev4any1.resource.UserResource;
 import net.dev4any1.service.CategoryServiceImpl;
 import net.dev4any1.service.JournalServiceImpl;
@@ -38,6 +41,7 @@ public class GuiceConfigContextListener extends GuiceServletContextListener {
 			bind(PublisherDao.class);
 			bind(SubscriptionDao.class);
 			bind(UserResource.class);
+			bind(PublisherResource.class);
 		}
 	});
 

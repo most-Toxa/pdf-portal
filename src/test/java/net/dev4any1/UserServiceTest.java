@@ -67,11 +67,6 @@ public class UserServiceTest {
 		SubscriptionModel sub = usService.subscribe(user, null); 
 	}
 	
-	@Test(expected = Error.class)
-	public void testGetByLoginException() {
-	    usService.getByLogin("anton"); 
-	}
-
 	@Test
 	public void testGetSubscription() {
 		CategoryModel cat1 = catService.createCategory("test1");

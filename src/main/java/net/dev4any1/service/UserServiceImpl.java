@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 
-		throw new Error("user with login " + login + " was not found");
+		return Optional.ofNullable(null);
 	}
 
 	@Override

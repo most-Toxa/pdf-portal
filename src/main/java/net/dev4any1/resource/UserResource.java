@@ -34,7 +34,7 @@ public class UserResource {
 			return Response.status(Response.Status.CONFLICT).entity(login + " user already exists").build();
 		}
 		UserModel user = service.createSubscriber(login, password);
-
+        LOG.info("user " + user.getLogin() + " was successfully created");
 		return Response.status(Response.Status.OK).entity(user).build();
 	}
 }

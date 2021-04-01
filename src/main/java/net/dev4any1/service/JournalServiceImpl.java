@@ -57,11 +57,13 @@ public class JournalServiceImpl implements JournalService {
 	}
 
 	@Override
-	public JournalModel publish(PublisherModel publisher, JournalModel journal, Long categoryId) {
+	public JournalModel publish(PublisherModel publisher, String fileName, Long categoryId) {
 		Category cat = catDao.get(categoryId);
 		if (cat == null) {
 			throw new Error("unable to publish journal, category " + categoryId + " not found");
 		}
+		JournalModel journal = new JournalModel();
+		journal.setName(fileName);
 		journal.setPublisher(publisher);
 		journal.setCategory(cat);
 		return journalDao.upsert(journal); 

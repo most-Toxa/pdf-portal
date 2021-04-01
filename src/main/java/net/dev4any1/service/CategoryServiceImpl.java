@@ -23,4 +23,8 @@ public class CategoryServiceImpl implements CategoryService {
 		return dao.getAll();
 	}
 
+	public CategoryModel getByName (String name) {
+		return dao.getByName(name);
+		
+	}
 }

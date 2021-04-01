@@ -12,9 +12,9 @@ public interface JournalService {
 
 	List<JournalModel> publisherList(PublisherModel publisher);// get all journals published by user
 
-	JournalModel publish(PublisherModel publisher, JournalModel journal, Long categoryId);// creates new journal, notifies subscribers
-
 	void unPublish(PublisherModel publisher, Long journalId);// deletes some journal
 	
 	List<JournalModel> getNewByCategory(Long categoryId);// get all new published journals for past 24 hours
+
+	JournalModel publish(PublisherModel publisher, String fileName, Long categoryId);
 }

@@ -2,6 +2,8 @@ package net.dev4any1;
 
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
@@ -42,6 +44,7 @@ public class GuiceConfigContextListener extends GuiceServletContextListener {
 			bind(SubscriptionDao.class);
 			bind(UserResource.class);
 			bind(PublisherResource.class);
+				
 		}
 	});
 

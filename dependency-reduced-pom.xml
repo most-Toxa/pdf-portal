@@ -42,6 +42,26 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.connectors</groupId>
+      <artifactId>jersey-grizzly-connector</artifactId>
+      <version>2.24</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>grizzly-http-client</artifactId>
+          <groupId>org.glassfish.grizzly</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>grizzly-websockets</artifactId>
+          <groupId>org.glassfish.grizzly</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>connection-pool</artifactId>
+          <groupId>org.glassfish.grizzly</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <properties>
     <maven.compiler.target>1.7</maven.compiler.target>

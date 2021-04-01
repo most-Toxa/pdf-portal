@@ -5,4 +5,5 @@ import net.dev4any1.pojo.User;
 
 public interface PublisherService {
 	public PublisherModel createPublisher(String name, User user);
+	public PublisherModel getPublisher(User user);
 }

@@ -40,4 +40,10 @@ public class CategoryServiceTest {
 		injector.injectMembers(service);
 	}
 
+	@Test
+	public void testGetByName() {
+		CategoryModel cat1 = service.createCategory("name1");
+		Assert.assertEquals(service.getByName("name1"), cat1);
+		Assert.assertNotEquals(service.getByName("name4"), cat1);
+	}
 }

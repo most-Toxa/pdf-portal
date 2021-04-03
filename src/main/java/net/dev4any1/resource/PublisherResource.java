@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Date;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -68,7 +69,7 @@ public class PublisherResource {
 		if (!user.get().getRole().equals(Role.PUBLISHER.name())) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("user " + user + " is not a publisher").build();
 		}
-		journalService.publish(pubService.getPublisher(user.get()), fileName, cat.getId());
+		journalService.publish(pubService.getPublisher(user.get()), fileName, cat.getId(), new Date(System.currentTimeMillis()));
 		return Response.status(Response.Status.OK).build();	
 	}
 

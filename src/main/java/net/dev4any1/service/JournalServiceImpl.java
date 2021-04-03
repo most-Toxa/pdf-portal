@@ -57,7 +57,7 @@ public class JournalServiceImpl implements JournalService {
 	}
 
 	@Override
-	public JournalModel publish(PublisherModel publisher, String fileName, Long categoryId) {
+	public JournalModel publish(PublisherModel publisher, String fileName, Long categoryId, Date publishedAt) {
 		Category cat = catDao.get(categoryId);
 		if (cat == null) {
 			throw new Error("unable to publish journal, category " + categoryId + " not found");
@@ -66,7 +66,8 @@ public class JournalServiceImpl implements JournalService {
 		journal.setName(fileName);
 		journal.setPublisher(publisher);
 		journal.setCategory(cat);
-		return journalDao.upsert(journal); 
+		journal.setPublishedAt(publishedAt);
+		return journalDao.upsert(journal);
 	}
 
 	@Override
@@ -83,22 +84,11 @@ public class JournalServiceImpl implements JournalService {
 
 	@Override
 	public List<JournalModel> getNewByCategory(Long categoryId) {
-		// TODO go to journalDao and create method getLastPosts (getAll 24h posts)
-		
-		// check categoryId exist
+			// check categoryId exist
 		if (catDao.get(categoryId) == null) {
 			throw new Error("unable to add journal in category, category " + categoryId + " not exist");
-		}
-		
-		List<JournalModel> journalList = new ArrayList<JournalModel>();
-		Date date = new Date();
-		for (JournalModel journal : journalDao.getAll()) {
+		}	
+		return journalDao.getLastPosts(categoryId);
+	} 
 
-			if (date.getTime() - journal.getPublishedAt().getTime() <= 24 * 60 * 60 * 1000) {
-				journalList.add(journal);
-			}
-			// return all journals for past 24
-		}
-		return journalList;
-	}
 }

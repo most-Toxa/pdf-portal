@@ -1,5 +1,6 @@
 package net.dev4any1.service;
 
+import java.util.Date;
 import java.util.List;
 
 import net.dev4any1.model.JournalModel;
@@ -16,5 +17,5 @@ public interface JournalService {
 	
 	List<JournalModel> getNewByCategory(Long categoryId);// get all new published journals for past 24 hours
 
-	JournalModel publish(PublisherModel publisher, String fileName, Long categoryId);
+	JournalModel publish(PublisherModel publisher, String fileName, Long categoryId, Date publishedAt);
 }

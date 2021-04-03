@@ -7,6 +7,6 @@ import net.dev4any1.model.CategoryModel;
 public interface CategoryService {
 
 	public CategoryModel createCategory(String name);
-
 	public Collection<CategoryModel> getAll();
+	public CategoryModel getByName(String name);
 }

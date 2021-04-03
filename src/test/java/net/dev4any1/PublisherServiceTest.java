@@ -42,11 +42,25 @@ public class PublisherServiceTest {
 
     
 	@Test
-	public void testCreatePublisher( ) {
+	public void testCreatePublisher() {
 		UserModel user = usService.createSubscriber("login", "password");
 		PublisherModel publisher = pubService.createPublisher("toxa", user);
 		Assert.assertEquals(user.getRole(), Role.PUBLISHER.name());
 		Assert.assertEquals("toxa", publisher.getName());
 		Assert.assertEquals(user, publisher.getUser());;
+	}
+	
+	@Test
+	public void testGetPublisher() {
+		UserModel user = usService.createSubscriber("login", "password");
+		PublisherModel publisher = pubService.createPublisher("toxa", user);
+		Assert.assertEquals(pubService.getPublisher(user), publisher);
+	}
+	
+	@Test(expected = Error.class)
+	public void testGetPublisherException() {
+		UserModel user = usService.createSubscriber("login", "password");
+		PublisherModel publisher = pubService.createPublisher("toxa", user);
+		Assert.assertEquals(pubService.getPublisher(null), publisher);
 	}
 }

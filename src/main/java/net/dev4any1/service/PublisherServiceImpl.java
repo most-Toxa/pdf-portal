@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import net.dev4any1.dao.PublisherDao;
 import net.dev4any1.model.PublisherModel;
-import net.dev4any1.model.UserModel;
 import net.dev4any1.pojo.Role;
 import net.dev4any1.pojo.User;
 

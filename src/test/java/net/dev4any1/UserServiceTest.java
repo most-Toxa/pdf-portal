@@ -25,7 +25,6 @@ public class UserServiceTest {
 
 	private UserServiceImpl usService = new UserServiceImpl();
 	private UserModel user; 
-	private CategoryModel cat = new CategoryModel();
 	private CategoryServiceImpl catService = new CategoryServiceImpl();
 
 	@Test
@@ -34,7 +33,12 @@ public class UserServiceTest {
 		Assert.assertNotNull(user.getId());
 		Assert.assertEquals(user, usService.getByLogin("login1").get());
 	}
-
+	
+	@Test
+	public void testGetByLoginError() {
+		Assert.assertTrue(usService.getByLogin("login4").isEmpty());
+	}
+	
 	protected Injector injector = Guice.createInjector(new AbstractModule() {
 		@Override
 		protected void configure() {
@@ -64,7 +68,7 @@ public class UserServiceTest {
 
 	@Test(expected = Error.class)
 	public void testSubscribeException() {
-		SubscriptionModel sub = usService.subscribe(user, null); 
+		usService.subscribe(user, null);
 	}
 	
 	@Test

@@ -1,10 +1,7 @@
 package net.dev4any1;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,17 +15,12 @@ import com.google.inject.servlet.SessionScoped;
 
 import net.dev4any1.dao.CategoryDao;
 import net.dev4any1.dao.JournalDao;
-import net.dev4any1.dao.PublisherDao;
 import net.dev4any1.dao.SubscriptionDao;
 import net.dev4any1.dao.UserDao;
 import net.dev4any1.model.CategoryModel;
 import net.dev4any1.model.JournalModel;
 import net.dev4any1.model.PublisherModel;
-import net.dev4any1.model.SubscriptionModel;
 import net.dev4any1.model.UserModel;
-import net.dev4any1.pojo.Category;
-import net.dev4any1.pojo.Journal;
-import net.dev4any1.pojo.User;
 import net.dev4any1.service.CategoryServiceImpl;
 import net.dev4any1.service.JournalServiceImpl;
 import net.dev4any1.service.PublisherServiceImpl;
@@ -41,7 +33,6 @@ public class JournalServiceTest {
 	private PublisherServiceImpl pubService = new PublisherServiceImpl();
 	private UserServiceImpl usService = new UserServiceImpl();
 	private JournalDao journalDao = new JournalDao();
-	private CategoryDao catDao = new CategoryDao();
 	private PublisherModel publisher;
 	private CategoryModel cat;
 	private UserModel userPublisher;
@@ -76,19 +67,21 @@ public class JournalServiceTest {
 		JournalModel journal1 = createJournal(1l, new Date(System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000)));
 		JournalModel journal2 = createJournal(2l, new Date(System.currentTimeMillis() - (8 * 24 * 60 * 60 * 1000)));
 		JournalModel journal3 = createJournal(3l, new Date(System.currentTimeMillis() - (12 * 60 * 60 * 1000)));
-		service.publish(publisher, journal1, cat.getId());
-		service.publish(publisher, journal2, cat.getId());
-		service.publish(publisher, journal3, cat.getId());
+		service.publish(publisher, journal1.getName(), cat.getId(), new Date(System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000)));
+		service.publish(publisher, journal2.getName(), cat.getId(), new Date(System.currentTimeMillis() - (8 * 24 * 60 * 60 * 1000)));
+		service.publish(publisher, journal3.getName(), cat.getId(), new Date(System.currentTimeMillis() - (12 * 60 * 60 * 1000)));
 	}
 
 	private JournalModel createJournal(long id, Date date) {
 		JournalModel journal = new JournalModel();
+		System.out.println(date);
 		journal.withField("testfile").withId(id).withName("name").withPublishedAt(date);
 		return journal;
 	}
 
 	@Test
 	public void testGetNewByCategory() {
+		System.out.println(cat.getId());
 		List<JournalModel> journalList = service.getNewByCategory(cat.getId());
 		Assert.assertTrue(journalList.size() == 1);
 		Assert.assertTrue(journalList.get(0).getId() != null);
@@ -115,7 +108,6 @@ public class JournalServiceTest {
 		for (JournalModel journal : journalList) {
 			Assert.assertEquals(publisher, journal.getPublisher());
 		}
-
 	}
 
 	@Test
@@ -124,7 +116,7 @@ public class JournalServiceTest {
 		CategoryModel cat1 = catService.createCategory("test1");
 		UserModel user1 = usService.createSubscriber("login1", "password1");
 		PublisherModel publisher1 = pubService.createPublisher("toxa1", user1);
-		JournalModel journal1 = service.publish(publisher1, journal, cat1.getId());
+		JournalModel journal1 = service.publish(publisher1, journal.getName(), cat1.getId(), new Date(System.currentTimeMillis()));
 		Assert.assertEquals(publisher1, journal1.getPublisher());
 		Assert.assertEquals(cat1, journal1.getCategory());
 	}
@@ -132,7 +124,7 @@ public class JournalServiceTest {
 	@Test(expected = Error.class)
 	public void testPublishException() {
 		JournalModel journal = createJournal(4l, new Date(System.currentTimeMillis()));
-		JournalModel journal1 = service.publish(publisher, journal, 24l);
+		service.publish(publisher, journal.getName() + "1", 24l, new Date(System.currentTimeMillis()));
 	}
 
 	@Test

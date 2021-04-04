@@ -1,8 +1,15 @@
 package net.dev4any1.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class User {
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+@XmlRootElement
+public class User implements Serializable {
+	private static final long serialVersionUID = User.class.getName().hashCode();
+
 	@Override
 	public String toString() {
 		return "User [login=" + login + ", password=" + password + ", role=" + role + ", subscriptions="
@@ -11,6 +18,7 @@ public class User {
 
 	
 	private String login;
+	@XmlTransient
 	private String password;
 	private String role;
 	private List<Subscription> subscriptions;
@@ -49,6 +57,9 @@ public class User {
 		this.subscriptions = subscriptions;
 	}
 	
+	public User getUser() {
+		return this;
+	} 
 	
 	
 }

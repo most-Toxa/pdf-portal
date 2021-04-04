@@ -14,6 +14,7 @@ import net.dev4any1.dao.JournalDao;
 import net.dev4any1.dao.PublisherDao;
 import net.dev4any1.dao.SubscriptionDao;
 import net.dev4any1.dao.UserDao;
+import net.dev4any1.resource.CategoryResource;
 import net.dev4any1.resource.PublisherResource;
 import net.dev4any1.resource.UserResource;
 import net.dev4any1.service.CategoryServiceImpl;
@@ -44,7 +45,7 @@ public class GuiceConfigContextListener extends GuiceServletContextListener {
 			bind(SubscriptionDao.class);
 			bind(UserResource.class);
 			bind(PublisherResource.class);
-				
+			bind(CategoryResource.class);		
 		}
 	});
 

@@ -1,17 +1,18 @@
 package net.dev4any1.model;
 
-import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
 import net.dev4any1.pojo.User;
-@XmlRootElement
-public class UserModel extends User implements DbObject, Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3149709616339527183L;
+
+public class UserModel extends User implements DbObject {
+
+	private static final long serialVersionUID = UserModel.class.getName().hashCode();
 	private Long id;
+
+	public static User toUser(UserModel u) {
+		User user = new User();
+		user.setLogin(u.getLogin());
+		user.setRole(u.getRole());
+		return user;
+	}
 
 	@Override
 	public Long getId() {
@@ -20,8 +21,7 @@ public class UserModel extends User implements DbObject, Serializable {
 
 	@Override
 	public void setId(Long id) {
-		this.id = id;	
+		this.id = id;
 	}
 
-	
 }
